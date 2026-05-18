@@ -1,0 +1,23 @@
+name: CorvidCloud
+version: "1.0.0"
+slug: cloudgateway
+description: Bridge your LAN cameras to the CorvidCloud video platform — remote viewing, recording, and license plate recognition without opening ports.
+url: https://github.com/lighthousetechio/home-assistant-addons/tree/main/cloudgateway
+arch:
+  - amd64
+  - aarch64
+  - armv7
+startup: application
+boot: auto
+init: false
+host_network: true
+options:
+  api_host: stream-api.corvidcloud.com
+  relay_host: ""
+  buffer_limit: 0
+  debug: false
+schema:
+  api_host: str
+  relay_host: str?
+  buffer_limit: int
+  debug: bool
