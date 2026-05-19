@@ -1,6 +1,6 @@
-# CorvidCloud — Home Assistant Add-ons
+# Corvid Cloud — Home Assistant Add-ons
 
-Official Home Assistant add-ons for [CorvidCloud](https://github.com/lighthousetechio), an IP video surveillance platform with remote access, recording, and license plate recognition.
+Official Home Assistant add-ons for Corvid Cloud, an IP video surveillance platform with remote access, recording, and license plate recognition.
 
 ## Installation
 
@@ -16,7 +16,7 @@ The add-ons listed below will appear in the store once the repository is loaded.
 
 ## Add-ons
 
-- [**CorvidCloud**](cloudgateway/) — Bridges RTSP/ONVIF cameras on your LAN to the CorvidCloud video surveillance platform.
+- [**Corvid Cloud Gateway**](cloudgateway/) — Bridges RTSP/ONVIF cameras on your LAN to the Corvid Cloud video surveillance platform.
 
 ## Support
 
