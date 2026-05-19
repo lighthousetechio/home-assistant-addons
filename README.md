@@ -4,6 +4,8 @@ Official Home Assistant add-ons for Corvid Cloud, an IP video surveillance platf
 
 ## Installation
 
+> **Not via HACS.** This is a native Supervisor add-on — install it from the built-in Add-on Store, not from HACS.
+
 In Home Assistant: **Settings → Add-ons → Add-on Store → ⋮ → Repositories**, then add:
 
 ```

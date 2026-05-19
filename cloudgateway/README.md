@@ -6,6 +6,8 @@ This add-on runs the **Cloud Gateway** agent on your Home Assistant host. The ga
 
 ## Installation
 
+> **Note:** This is a native Supervisor add-on. Install it from the built-in **Add-on Store**, not from HACS.
+
 1. In Home Assistant: **Settings → Add-ons → Add-on Store**.
 2. Open the **⋮** menu (top-right) → **Repositories**.
 3. Add `https://github.com/lighthousetechio/home-assistant-addons`.
