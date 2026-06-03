@@ -16,8 +16,10 @@ options:
   relay_host: ""
   buffer_limit: 0
   debug: false
+  disable_gc_fix: false
 schema:
   api_host: str
   relay_host: str?
   buffer_limit: int
   debug: bool
+  disable_gc_fix: bool

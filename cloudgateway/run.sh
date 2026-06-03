@@ -5,6 +5,7 @@ API_HOST=$(bashio::config 'api_host')
 RELAY_HOST=$(bashio::config 'relay_host')
 BUFFER_LIMIT=$(bashio::config 'buffer_limit')
 DEBUG=$(bashio::config 'debug')
+DISABLE_GC_FIX=$(bashio::config 'disable_gc_fix')
 
 # Append default port if user did not specify one.
 case "${API_HOST}" in
@@ -28,6 +29,10 @@ fi
 
 if bashio::var.true "${DEBUG}"; then
     ARGS="${ARGS} -debug"
+fi
+
+if bashio::var.true "${DISABLE_GC_FIX}"; then
+    ARGS="${ARGS} -disable_gc_fix"
 fi
 
 bashio::log.info "Launching cloudgateway ${ARGS}"
