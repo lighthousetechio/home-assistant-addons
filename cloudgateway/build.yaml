@@ -3,4 +3,4 @@ build_from:
   aarch64: ghcr.io/home-assistant/aarch64-base:latest
   armv7: ghcr.io/home-assistant/armv7-base:latest
 args:
-  BINARY_VERSION: "0.1.6"
+  BINARY_VERSION: "0.1.7-debug"
