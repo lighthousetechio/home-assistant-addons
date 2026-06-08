@@ -6,7 +6,7 @@ ARG BINARY_VERSION=0.1.7-debug-gc
 
 ENV LANG=C.UTF-8
 
-RUN apk add --no-cache curl ca-certificates
+RUN apk add --no-cache curl ca-certificates python3
 
 # Map Home Assistant BUILD_ARCH to the binary arch suffix used by openrepo.
 RUN set -eu; \
@@ -21,6 +21,7 @@ RUN set -eu; \
     curl -fsSL --retry 3 -o /usr/local/bin/cloudgateway "${url}"; \
     chmod +x /usr/local/bin/cloudgateway
 
+COPY webui /webui
 COPY run.sh /
 RUN chmod a+x /run.sh
 

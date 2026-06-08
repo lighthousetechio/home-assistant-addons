@@ -16,6 +16,12 @@ This add-on runs the **Cloud Gateway** agent on your Home Assistant host. The ga
 
 ## Configuration
 
+You can edit the settings two ways: the native **Configuration** tab, or the
+built-in **web UI** (the add-on's **Open Web UI** button / sidebar panel). The
+web UI also shows the device **MAC address** with a one-click **Copy** button —
+this is the id used to register the device in Corvid Cloud. Saving in the web UI
+applies the changes by restarting the add-on.
+
 | Option | Default | Description |
 |--------|---------|-------------|
 | `api_host` | `stream-api.corvidcloud.com` | Corvid Cloud API endpoint. Port defaults to 443 if omitted. |

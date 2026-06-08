@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+- Added a web UI (Home Assistant Ingress) to edit the gateway settings and copy
+  the device MAC address — the id used to register the device in Corvid Cloud.
+- Settings changed in the UI are saved through the Supervisor API and applied by
+  restarting the add-on, identical to the native configuration screen.
+
 ## 1.0.0
 
 - Initial public release of the Corvid Cloud Gateway add-on.

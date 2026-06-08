@@ -35,5 +35,9 @@ if bashio::var.true "${DISABLE_GC_FIX}"; then
     ARGS="${ARGS} -disable_gc_fix"
 fi
 
+# Start the configuration web UI (served through Home Assistant Ingress).
+bashio::log.info "Starting config web UI on :8099"
+python3 /webui/server.py &
+
 bashio::log.info "Launching cloudgateway ${ARGS}"
 exec /usr/local/bin/cloudgateway ${ARGS}
