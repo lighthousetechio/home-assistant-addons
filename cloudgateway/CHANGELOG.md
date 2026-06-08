@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.2
+
+- Added a `debug_memory` option (debug builds): when enabled, the gateway runs
+  garbage collection plus `FreeOSMemory` once an hour instead of every 200 ms,
+  to measure the memory/CPU trade-off of the leak fix. Keep `disable_gc_fix`
+  off so the periodic GC stays active.
+
 ## 1.1.1
 
 - Fixed the web UI showing a false "restart request failed" message after

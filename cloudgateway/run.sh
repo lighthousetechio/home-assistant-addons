@@ -6,6 +6,7 @@ RELAY_HOST=$(bashio::config 'relay_host')
 BUFFER_LIMIT=$(bashio::config 'buffer_limit')
 DEBUG=$(bashio::config 'debug')
 DISABLE_GC_FIX=$(bashio::config 'disable_gc_fix')
+DEBUG_MEMORY=$(bashio::config 'debug_memory')
 
 # Append default port if user did not specify one.
 case "${API_HOST}" in
@@ -33,6 +34,10 @@ fi
 
 if bashio::var.true "${DISABLE_GC_FIX}"; then
     ARGS="${ARGS} -disable_gc_fix"
+fi
+
+if bashio::var.true "${DEBUG_MEMORY}"; then
+    ARGS="${ARGS} -debug_memory"
 fi
 
 # Start the configuration web UI (served through Home Assistant Ingress).
