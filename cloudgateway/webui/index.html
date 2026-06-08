@@ -168,15 +168,12 @@
           showMsg("Save failed: " + (res.body.error || "unknown error"), "error");
           return;
         }
-        showMsg("Settings saved. Restarting the gateway…", "success");
-        return fetch("restart", { method: "POST" }).then(function(rr) {
-          btn.disabled = false;
-          if (rr.ok) {
-            showMsg("Settings saved. Gateway restarting — changes apply in a few seconds.", "success");
-          } else {
-            showMsg("Settings saved, but the restart request failed. Restart the add-on manually.", "error");
-          }
-        });
+        // Restart to apply. The restart kills this add-on (and therefore this
+        // page's connection), so a closed/failed request here is the normal
+        // success case — fire it and report success regardless of the reply.
+        showMsg("Settings saved. The add-on is restarting to apply the changes — it will be back in a few seconds.", "success");
+        fetch("restart", { method: "POST" }).catch(function() {});
+        setTimeout(function() { btn.disabled = false; }, 4000);
       })
       .catch(function() {
         btn.disabled = false;

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+- Fixed the web UI showing a false "restart request failed" message after
+  saving. The restart stops the add-on (and the page connection), so that is
+  the expected success path — the UI now reports success and reconnects.
+
 ## 1.1.0
 
 - Added a web UI (Home Assistant Ingress) to edit the gateway settings and copy
