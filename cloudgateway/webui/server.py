@@ -23,7 +23,7 @@ DEFAULTS = {
     "relay_host": "",
     "buffer_limit": 0,
     "debug": False,
-    "disable_gc_fix": False,
+    "disable_gc_fix": True,
     "debug_memory": False,
     "is_low_memory": False,
     "data_channel": False,

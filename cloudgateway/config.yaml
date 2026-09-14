@@ -1,5 +1,5 @@
 name: Corvid Cloud Gateway
-version: "1.3.2"
+version: "1.3.3"
 slug: cloudgateway
 description: Bridge your LAN cameras to the Corvid Cloud video platform — remote viewing, recording, and license plate recognition without opening ports.
 url: https://github.com/lighthousetechio/home-assistant-addons/tree/main/cloudgateway
@@ -21,7 +21,7 @@ options:
   relay_host: ""
   buffer_limit: 0
   debug: false
-  disable_gc_fix: false
+  disable_gc_fix: true
   debug_memory: false
   is_low_memory: false
   data_channel: false

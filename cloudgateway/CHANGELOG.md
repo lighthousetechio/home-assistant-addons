@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.3
+
+- `disable_gc_fix` now defaults to enabled. Confirmed on a test VM: without
+  it, the gateway's normal (aggressive) GC behavior starves the CPU badly
+  enough to trigger kernel RCU stalls under Home Assistant OS — the fix
+  Andrey flagged is not optional here, even though the same binary runs
+  fine on the cameras. Still exposed under Advanced settings in case a
+  future binary changes this.
+
 ## 1.3.2
 
 - Exposed `debug_memory` in the web UI (it was already a valid add-on
