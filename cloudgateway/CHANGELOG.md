@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.2
+
+- Exposed `debug_memory` in the web UI (it was already a valid add-on
+  option, just not editable there) — use it if the system needs the
+  gateway to free memory back to the OS.
+- Added `is_low_memory` and `data_channel` options, matching flags newly
+  available in the 1.3.1 binary.
+- Grouped `disable_gc_fix`, `debug_memory`, `is_low_memory` and
+  `data_channel` under a collapsible "Advanced settings" section in the
+  web UI, auto-expanded when any of them is already on.
+
 ## 1.3.1
 
 - Add-on version now tracks the cloud gateway binary version, so both move

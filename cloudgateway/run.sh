@@ -7,6 +7,8 @@ BUFFER_LIMIT=$(bashio::config 'buffer_limit')
 DEBUG=$(bashio::config 'debug')
 DISABLE_GC_FIX=$(bashio::config 'disable_gc_fix')
 DEBUG_MEMORY=$(bashio::config 'debug_memory')
+IS_LOW_MEMORY=$(bashio::config 'is_low_memory')
+DATA_CHANNEL=$(bashio::config 'data_channel')
 
 # Append default port if user did not specify one.
 case "${API_HOST}" in
@@ -38,6 +40,14 @@ fi
 
 if bashio::var.true "${DEBUG_MEMORY}"; then
     ARGS="${ARGS} -debug_memory"
+fi
+
+if bashio::var.true "${IS_LOW_MEMORY}"; then
+    ARGS="${ARGS} -is_low_memory"
+fi
+
+if bashio::var.true "${DATA_CHANNEL}"; then
+    ARGS="${ARGS} -data_channel"
 fi
 
 # Start the configuration web UI (served through Home Assistant Ingress).

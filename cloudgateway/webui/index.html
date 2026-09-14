@@ -54,6 +54,15 @@
       border-radius: 5px; cursor: pointer; color: #44494f;
     }
     .mac-copy:hover { background: #e2e5e8; }
+    .advanced { margin-bottom: 18px; border: 1px solid #eceef0; border-radius: 8px; }
+    .advanced summary {
+      padding: 10px 14px; cursor: pointer; font-weight: 600; font-size: 13px;
+      color: #44494f; list-style: none;
+    }
+    .advanced summary::-webkit-details-marker { display: none; }
+    .advanced summary::before { content: "▸ "; }
+    .advanced[open] summary::before { content: "▾ "; }
+    .advanced .advanced-body { padding: 4px 14px 14px; }
   </style>
 </head>
 <body>
@@ -92,10 +101,30 @@
         <label for="debug">Debug logging</label>
       </div>
 
-      <div class="check-row">
-        <input type="checkbox" id="disable_gc_fix">
-        <label for="disable_gc_fix">Disable GC fix (advanced)</label>
-      </div>
+      <details class="advanced">
+        <summary>Advanced settings</summary>
+        <div class="advanced-body">
+          <div class="check-row">
+            <input type="checkbox" id="disable_gc_fix">
+            <label for="disable_gc_fix">Disable GC fix</label>
+          </div>
+
+          <div class="check-row">
+            <input type="checkbox" id="debug_memory">
+            <label for="debug_memory">Free memory to system hourly</label>
+          </div>
+
+          <div class="check-row">
+            <input type="checkbox" id="is_low_memory">
+            <label for="is_low_memory">Low-memory mode</label>
+          </div>
+
+          <div class="check-row">
+            <input type="checkbox" id="data_channel">
+            <label for="data_channel">Enable data-channel connection</label>
+          </div>
+        </div>
+      </details>
 
       <div class="btn-row">
         <button id="save-btn">Save &amp; restart</button>
@@ -130,6 +159,12 @@
           document.getElementById("buffer_limit").value = (cfg.buffer_limit != null) ? cfg.buffer_limit : 0;
           document.getElementById("debug").checked = !!cfg.debug;
           document.getElementById("disable_gc_fix").checked = !!cfg.disable_gc_fix;
+          document.getElementById("debug_memory").checked = !!cfg.debug_memory;
+          document.getElementById("is_low_memory").checked = !!cfg.is_low_memory;
+          document.getElementById("data_channel").checked = !!cfg.data_channel;
+          if (cfg.disable_gc_fix || cfg.debug_memory || cfg.is_low_memory || cfg.data_channel) {
+            document.querySelector(".advanced").open = true;
+          }
           document.getElementById("mac-value").textContent = cfg.mac || "—";
         })
         .catch(function() { showMsg("Could not load current configuration.", "error"); });
@@ -152,7 +187,10 @@
         relay_host: document.getElementById("relay_host").value.trim(),
         buffer_limit: bufRaw ? parseInt(bufRaw, 10) : 0,
         debug: document.getElementById("debug").checked,
-        disable_gc_fix: document.getElementById("disable_gc_fix").checked
+        disable_gc_fix: document.getElementById("disable_gc_fix").checked,
+        debug_memory: document.getElementById("debug_memory").checked,
+        is_low_memory: document.getElementById("is_low_memory").checked,
+        data_channel: document.getElementById("data_channel").checked
       };
 
       btn.disabled = true;

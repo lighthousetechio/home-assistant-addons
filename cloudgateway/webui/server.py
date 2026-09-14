@@ -24,6 +24,9 @@ DEFAULTS = {
     "buffer_limit": 0,
     "debug": False,
     "disable_gc_fix": False,
+    "debug_memory": False,
+    "is_low_memory": False,
+    "data_channel": False,
 }
 
 
@@ -135,6 +138,9 @@ class Handler(BaseHTTPRequestHandler):
                 "buffer_limit": buffer_limit,
                 "debug": bool(body.get("debug", False)),
                 "disable_gc_fix": bool(body.get("disable_gc_fix", False)),
+                "debug_memory": bool(body.get("debug_memory", False)),
+                "is_low_memory": bool(body.get("is_low_memory", False)),
+                "data_channel": bool(body.get("data_channel", False)),
             }
 
             try:
