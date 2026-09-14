@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.1
+
+- Add-on version now tracks the cloud gateway binary version, so both move
+  together going forward.
+- Switched from the `0.1.7-debug-gc` diagnostic build to the stable
+  `1.3.1` binary release, which includes the goroutine leak fix validated
+  during the debug builds. The `disable_gc_fix` and `debug_memory` options
+  remain available for further diagnostics if needed.
+
 ## 1.1.2
 
 - Added a `debug_memory` option (debug builds): when enabled, the gateway runs
