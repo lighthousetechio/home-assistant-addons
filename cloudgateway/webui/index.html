@@ -1,248 +1,278 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Corvid Cloud Gateway</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      margin: 0; padding: 24px; background: #f5f6f8; color: #2b2b2b;
-    }
-    .card {
-      max-width: 560px; margin: 0 auto; background: #fff;
-      border: 1px solid #e3e5e8; border-radius: 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06); overflow: hidden;
-    }
-    .card-header {
-      padding: 18px 24px; border-bottom: 1px solid #eceef0;
-      display: flex; align-items: center; gap: 12px;
-    }
-    .card-header h1 { font-size: 17px; margin: 0; font-weight: 600; }
-    .card-header .dot { width: 10px; height: 10px; border-radius: 50%; background: #03a9f4; }
-    .card-body { padding: 22px 24px; }
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; }
-    .form-group input[type="text"], .form-group input[type="number"] {
-      width: 100%; padding: 9px 11px; border: 1px solid #c7cbd1;
-      border-radius: 6px; background: #fff; color: #2b2b2b; font-size: 14px;
-    }
-    .form-group input:focus { border-color: #03a9f4; outline: none; }
-    .form-group .hint { font-size: 12px; color: #8b9097; margin-top: 4px; }
-    .check-row { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; }
-    .check-row input { width: 16px; height: 16px; }
-    .check-row label { font-weight: 600; font-size: 13px; margin: 0; }
-    .btn-row { display: flex; gap: 12px; align-items: center; margin-top: 6px; }
-    #save-btn {
-      padding: 10px 22px; background: #03a9f4; color: #fff;
-      border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600;
-    }
-    #save-btn:hover { background: #0288c7; }
-    #save-btn:disabled { background: #9bb6c4; cursor: not-allowed; }
-    .message { margin-top: 16px; font-weight: 500; padding: 9px 13px; border-radius: 6px; font-size: 13px; display: none; }
-    .message.show { display: block; }
-    .success { color: #1b5e20; background: #e6f4ea; border: 1px solid #b7dfc1; }
-    .error   { color: #7f1d1d; background: #fdecea; border: 1px solid #f5c2bd; }
-    .mac-bar {
-      margin-top: 22px; padding-top: 16px; border-top: 1px solid #eceef0;
-      display: flex; align-items: center; gap: 10px; font-size: 13px; color: #6b7177;
-    }
-    .mac-bar .mac-value { font-family: "SF Mono", Menlo, Consolas, monospace; color: #2b2b2b; font-size: 13px; }
-    .mac-copy {
-      font-size: 12px; padding: 4px 10px; background: #eef0f2; border: 1px solid #d8dbdf;
-      border-radius: 5px; cursor: pointer; color: #44494f;
-    }
-    .mac-copy:hover { background: #e2e5e8; }
-    .advanced { margin-bottom: 18px; border: 1px solid #eceef0; border-radius: 8px; }
-    .advanced summary {
-      padding: 10px 14px; cursor: pointer; font-weight: 600; font-size: 13px;
-      color: #44494f; list-style: none;
-    }
-    .advanced summary::-webkit-details-marker { display: none; }
-    .advanced summary::before { content: "▸ "; }
-    .advanced[open] summary::before { content: "▾ "; }
-    .advanced .advanced-body { padding: 4px 14px 14px; }
-  </style>
+<meta charset="utf-8">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corvid Cloud Gateway</title>
+<style>
+  :root { --ink:#191c28; --muted:#6b7280; --line:#e5e7eb; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#fff; color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width:560px; margin:0 auto; padding:30px 24px 44px; }
+  .brand { display:flex; align-items:center; gap:14px; background:var(--ink);
+    margin:-30px -24px 0; padding:22px 24px 20px; }
+  .brand svg { height:34px; width:auto; display:block; }
+  .brand .sub { font-size:13px; line-height:1; color:#a6afc3; letter-spacing:.03em; text-transform:uppercase; }
+  h1 { font-size:18px; font-weight:600; margin:24px 0 0; }
+  .tabs { display:flex; gap:2px; margin-top:18px; border-bottom:1px solid var(--line); }
+  .tab { padding:9px 16px; font-size:14px; color:var(--muted); background:none; border:none;
+    border-bottom:2px solid transparent; cursor:pointer; }
+  .tab.active { color:var(--ink); border-bottom-color:var(--ink); font-weight:600; }
+  .panel { display:none; padding-top:22px; }
+  .panel.active { display:block; }
+  .field { margin-bottom:18px; }
+  .field label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; }
+  .field .hint { font-size:12px; color:var(--muted); margin-top:5px; }
+  input[type=text], input[type=number] { width:100%; padding:9px 11px; font-size:14px; color:var(--ink);
+    background:#fff; border:1px solid #d0d3dc; border-radius:8px; }
+  input[type=text]:focus, input[type=number]:focus { outline:none; border-color:var(--ink); }
+  .check { display:flex; align-items:center; gap:10px; }
+  .check input { width:16px; height:16px; accent-color:var(--ink); }
+  .actions { display:flex; align-items:center; gap:14px; margin-top:28px; }
+  button.save { padding:10px 24px; font-size:14px; font-weight:600; color:#fff; background:var(--ink);
+    border:none; border-radius:8px; cursor:pointer; }
+  button.save:hover { background:#0f1119; }
+  button.save:disabled { opacity:.5; cursor:default; }
+  #msg { font-size:13px; font-weight:600; }
+  #msg.ok { color:#15803d; } #msg.err { color:#b91c1c; }
+  .macbar { display:flex; align-items:center; gap:10px; margin-top:32px; padding-top:14px;
+    border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
+  .macbar b { font-weight:600; }
+  .macbar .mac { font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--ink); }
+  .copy { font-size:11px; padding:3px 9px; background:#f3f4f6; border:1px solid var(--line);
+    border-radius:6px; cursor:pointer; color:var(--ink); }
+  .copy:hover { background:#e5e7eb; }
+  .help { margin-top:14px; font-size:12px; color:var(--muted); }
+  .help a { color:var(--muted); text-decoration:none; border-bottom:1px solid #d0d3dc; }
+  .help a:hover { color:var(--ink); border-bottom-color:var(--ink); }
+  .copyright { margin-top:10px; font-size:11px; color:var(--muted); }
+</style>
 </head>
 <body>
-  <div class="card">
-    <div class="card-header">
-      <span class="dot"></span>
-      <h1>Corvid Cloud Gateway</h1>
+  <div class="wrap">
+    <div class="brand"><svg width="260" height="93" viewBox="0 0 260 93" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M43.1642 79.5092L11.902 56.0017L13.9128 39.2779L11.4295 39.245L7.75929 58.073L37.5601 80.4736L31.9999 84.5176L9.41856 65.7006C6.22091 63.0375 3.61664 58.5442 3.58367 52.5276L4.35287 6.58651L31.945 4.21932L31.912 1.52588e-05L0.660732 2.64119L0.00142058 53.9084C-0.0754988 59.6401 2.9793 65.591 7.20987 69.076L32.0219 89.6794L43.1862 79.5092H43.1642ZM13.2535 55.4975C42.3511 76.8023 47.0651 80.2544 64.4709 93C57.7349 74.7858 52.922 57.9743 46.197 39.7601L41.1313 39.6834L38.4062 30.7078L54.4823 22.7952L31.945 13.2716L20.3081 14.8826C18.1984 26.609 15.3414 43.9027 13.2535 55.4975ZM23.1981 18.4334L31.9559 17.2498L50.1749 23.913L34.0877 28.4063L33.9449 28.4502L35.0107 31.5078L37.4282 39.6176L20.6598 39.3765L19.8796 43.5849L43.8345 43.9246L56.4713 82.238L54.5812 80.8572L42.9115 45.6561L39.505 46.248L49.5925 77.2078L17.0885 53.4043L23.2091 18.4334H23.1981Z" fill="#999999"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M54.5704 80.8569L42.9006 45.6559L39.4942 46.2477L49.5816 77.2075L31.989 64.3194V69.2073L64.471 92.9998L46.1972 39.7489L41.1315 39.6831L38.4063 30.6965L56.4274 25.5019L54.4825 22.7949L31.9561 13.2714V17.2496L50.175 23.9237L33.945 28.4609L37.4174 39.6283L31.8462 39.5406V43.7599L43.8236 43.9353L56.4604 82.2487L54.5704 80.8569Z" fill="#E6E6E6"/>
+<path d="M56.4706 63.6739C58.2837 61.0765 60.3166 56.6709 60.3496 52.5393L59.5804 6.59823L31.9443 4.23103L31.9114 0.011734L63.2835 2.66386L63.9428 53.9311C64.0087 58.8189 60.9979 64.8575 57.7233 68.3973L56.4926 63.6848L56.4706 63.6739Z" fill="#E6E6E6"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M97.2716 25.4253C87.6238 25.4253 80.3384 32.2858 80.3384 41.4148C80.3384 50.5439 87.4479 57.6674 96.9969 57.6674C101.656 57.6674 106.689 55.3659 110.084 51.8919L105.37 46.9273C103.15 49.1849 100.074 50.6316 97.4035 50.6316C92.3818 50.6316 88.5688 46.6095 88.5688 41.3272C88.5688 36.0448 92.3708 32.1653 97.4035 32.1653C100.206 32.1653 103.293 33.7434 105.37 36.275L110.029 30.7625C106.865 27.5076 101.975 25.4363 97.2607 25.4363L97.2716 25.4253ZM128.237 25.4253C118.457 25.4253 111.117 32.242 111.117 41.4587C111.117 50.6754 118.457 57.6674 128.237 57.6674C138.017 57.6674 145.401 50.6644 145.401 41.4587C145.401 32.2529 138.061 25.4253 128.237 25.4253ZM128.336 32.1543C133.226 32.1543 137.116 36.1763 137.116 41.5025C137.116 46.8287 133.226 50.9384 128.336 50.9384C123.446 50.9384 119.369 46.8287 119.369 41.5025C119.369 36.1763 123.446 32.1543 128.336 32.1543ZM168.763 57.3057H177.905L171.246 46.8725C174.96 45.0204 176.993 41.5464 176.993 36.7133C176.993 29.6666 172.191 25.6993 163.818 25.6993H149.643V32.1433H157.697V32.0228H163.807C167.29 32.0228 169.334 33.6886 169.334 36.9873C169.334 40.2861 167.301 42.0943 163.807 42.0943H157.697V34.3681H149.643V57.3167H157.697V48.4178H164.038L168.752 57.3167L168.763 57.3057ZM199.552 57.3057L212.002 25.6993H203.717L195.608 48.9548L187.498 25.6993H178.894L191.212 57.3057H199.542H199.552ZM223.189 57.3057V34.3571H215.134V57.3057H223.189ZM229.529 25.6993V32.1433H237.584V32.1105H242.968C248.089 32.1105 251.803 35.9462 251.803 41.5464C251.803 47.1465 248.275 50.8946 243.331 50.8946H237.584V34.3571H229.529V57.3057H242.836C253.022 57.3057 260 50.8507 260 41.5025C260 32.1543 253.121 25.6993 243.155 25.6993H229.529Z" fill="#E6E6E6"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M215.134 25.7001V32.1441H223.189V25.7001H215.134Z" fill="#FF0000"/>
+</svg><span class="sub">Cloud Gateway</span></div>
+
+    <h1>Configuration</h1>
+
+    <div class="tabs">
+      <button type="button" class="tab active" data-tab="basic">Basic</button>
+      <button type="button" class="tab" data-tab="advanced">Advanced</button>
     </div>
-    <div class="card-body">
 
-      <div class="form-group">
-        <label for="api_host">API host</label>
-        <input type="text" id="api_host" list="api-hosts" placeholder="stream-api.corvidcloud.com">
-        <datalist id="api-hosts">
-          <option value="stream-api.corvidcloud.com">
-          <option value="stream-api.stg.corvidcloud.com">
-          <option value="stream-api.dev.corvidcloud.com">
-        </datalist>
-        <div class="hint">Port :443 is added automatically if omitted.</div>
+    <div class="panel active" id="basic">
+      <div class="field">
+        <label for="api_host">API Host</label>
+        <input id="api_host" type="text" maxlength="255" placeholder="stream-api.corvidcloud.com">
+        <div class="hint">Host or host:port. Port :443 is used if omitted.</div>
       </div>
-
-      <div class="form-group">
-        <label for="relay_host">Relay host</label>
-        <input type="text" id="relay_host" placeholder="(optional — leave empty for auto-assign)">
-        <div class="hint">Port :8888 is added automatically if omitted. Leave empty unless troubleshooting.</div>
+      <div class="field">
+        <label for="relay_host">Relay Host</label>
+        <input id="relay_host" type="text" maxlength="255" placeholder="auto">
+        <div class="hint">Leave as "auto" and the API assigns one. Set a host[:port] only to force a specific relay.</div>
       </div>
-
-      <div class="form-group">
-        <label for="buffer_limit">Buffer limit</label>
-        <input type="number" id="buffer_limit" min="0" value="0">
-        <div class="hint">0 = use the gateway default.</div>
-      </div>
-
-      <div class="check-row">
-        <input type="checkbox" id="debug">
-        <label for="debug">Debug logging</label>
-      </div>
-
-      <details class="advanced">
-        <summary>Advanced settings</summary>
-        <div class="advanced-body">
-          <div class="check-row">
-            <input type="checkbox" id="disable_gc_fix">
-            <label for="disable_gc_fix">Disable GC fix</label>
-          </div>
-
-          <div class="check-row">
-            <input type="checkbox" id="debug_memory">
-            <label for="debug_memory">Free memory to system hourly</label>
-          </div>
-
-          <div class="check-row">
-            <input type="checkbox" id="is_low_memory">
-            <label for="is_low_memory">Low-memory mode</label>
-          </div>
-
-          <div class="check-row">
-            <input type="checkbox" id="data_channel">
-            <label for="data_channel">Enable data-channel connection</label>
-          </div>
-        </div>
-      </details>
-
-      <div class="btn-row">
-        <button id="save-btn">Save &amp; restart</button>
-      </div>
-
-      <div id="msg" class="message"></div>
-
-      <div class="mac-bar">
-        MAC: <span class="mac-value" id="mac-value">—</span>
-        <button class="mac-copy" id="mac-copy">Copy</button>
-      </div>
-
     </div>
+
+    <div class="panel" id="advanced">
+      <div class="field">
+        <label for="buffer_limit">Buffer Limit</label>
+        <input id="buffer_limit" type="number" min="0" value="0">
+        <div class="hint">0 = default.</div>
+      </div>
+      <div class="field">
+        <label>Debug</label>
+        <div class="check"><input id="debug" type="checkbox"><span>Verbose logging</span></div>
+      </div>
+      <div class="field">
+        <label>Low memory mode</label>
+        <div class="check"><input id="is_low_memory" type="checkbox"><span>Reduce memory use</span></div>
+      </div>
+      <div class="field">
+        <label>Data channel</label>
+        <div class="check"><input id="data_channel" type="checkbox"><span>Enable the smux data-channel connection</span></div>
+      </div>
+      <div class="field">
+        <label>Disable GC fix</label>
+        <div class="check"><input id="disable_gc_fix" type="checkbox"><span>Home Assistant OS needs this on — turning it off restores the aggressive GC that starves the CPU here</span></div>
+      </div>
+      <div class="field">
+        <label>Free memory hourly</label>
+        <div class="check"><input id="debug_memory" type="checkbox"><span>Run GC + FreeOSMemory once an hour instead of continuously</span></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="save" id="apply">Save &amp; restart</button>
+      <span id="msg"></span>
+    </div>
+
+    <div class="macbar">
+      <b>MAC</b><span class="mac" id="mac">—</span>
+      <button type="button" class="copy" id="copyBtn">Copy</button>
+    </div>
+
+    <div class="help">
+      Need help? Read the
+      <a href="https://support.corvidcloud.com/corvid-support/en/collections/19647569-how-to-guides" target="_blank" rel="noopener">how-to guides</a>
+      or email <a href="mailto:support@lighthousetech.io">support@lighthousetech.io</a>.
+    </div>
+
+    <div class="copyright">&copy; Lighthouse Technologies</div>
   </div>
 
-  <script>
-    function showMsg(text, type) {
-      var el = document.getElementById("msg");
-      el.textContent = text;
-      el.className = "message show " + (type || "");
-    }
-    function hideMsg() {
-      document.getElementById("msg").className = "message";
-    }
+<script>
+// Allowlists of valid Corvid hosts. Kept in code, NOT rendered as a dropdown —
+// no environment is presented as a selectable option (the DNS are not secret,
+// but listing them as choices in a production UI is not appropriate). Keep in
+// sync with cameras/WEBUI_SPEC.md (Axis is the source of truth).
+var VALID_API_HOSTS = [
+  "stream-api.corvidcloud.com",
+  "stream-api.stg.corvidcloud.com",
+  "stream-api.dev.corvidcloud.com"
+];
+var VALID_RELAY_HOSTS = [
+  "relay001.corvidcloud.com",
+  "relay002.corvidcloud.com",
+  "relay001.stg.corvidcloud.com",
+  "relay001.dev.corvidcloud.com"
+];
 
-    function loadConfig() {
-      fetch("config", { headers: { "Accept": "application/json" } })
-        .then(function(r) { return r.json(); })
-        .then(function(cfg) {
-          document.getElementById("api_host").value = cfg.api_host || "";
-          document.getElementById("relay_host").value = cfg.relay_host || "";
-          document.getElementById("buffer_limit").value = (cfg.buffer_limit != null) ? cfg.buffer_limit : 0;
-          document.getElementById("debug").checked = !!cfg.debug;
-          document.getElementById("disable_gc_fix").checked = !!cfg.disable_gc_fix;
-          document.getElementById("debug_memory").checked = !!cfg.debug_memory;
-          document.getElementById("is_low_memory").checked = !!cfg.is_low_memory;
-          document.getElementById("data_channel").checked = !!cfg.data_channel;
-          if (cfg.disable_gc_fix || cfg.debug_memory || cfg.is_low_memory || cfg.data_channel) {
-            document.querySelector(".advanced").open = true;
-          }
-          document.getElementById("mac-value").textContent = cfg.mac || "—";
-        })
-        .catch(function() { showMsg("Could not load current configuration.", "error"); });
-    }
+// Host must be in the allowlist; port, if present, must be 1-65535.
+function validHost(val, list) {
+  var host = val, i = val.lastIndexOf(":");
+  if (i > 0) {
+    host = val.substring(0, i);
+    var port = val.substring(i + 1);
+    if (!/^\d+$/.test(port)) return false;
+    var p = parseInt(port, 10);
+    if (p < 1 || p > 65535) return false;
+  }
+  return list.indexOf(host) >= 0;
+}
 
-    function saveConfig() {
-      var btn = document.getElementById("save-btn");
-      hideMsg();
-
-      var apiHost = document.getElementById("api_host").value.trim();
-      if (!apiHost) { showMsg("API host is required.", "error"); return; }
-
-      var bufRaw = document.getElementById("buffer_limit").value.trim();
-      if (bufRaw && !/^\d+$/.test(bufRaw)) {
-        showMsg("Buffer limit must be a number.", "error"); return;
-      }
-
-      var payload = {
-        api_host: apiHost,
-        relay_host: document.getElementById("relay_host").value.trim(),
-        buffer_limit: bufRaw ? parseInt(bufRaw, 10) : 0,
-        debug: document.getElementById("debug").checked,
-        disable_gc_fix: document.getElementById("disable_gc_fix").checked,
-        debug_memory: document.getElementById("debug_memory").checked,
-        is_low_memory: document.getElementById("is_low_memory").checked,
-        data_channel: document.getElementById("data_channel").checked
+// Tab switching
+(function () {
+  var tabs = document.querySelectorAll(".tab"), i;
+  for (i = 0; i < tabs.length; i++) {
+    (function (t) {
+      t.onclick = function () {
+        var all = document.querySelectorAll(".tab"), pans = document.querySelectorAll(".panel"), j;
+        for (j = 0; j < all.length; j++) all[j].className = "tab" + (all[j] === t ? " active" : "");
+        var name = t.getAttribute("data-tab");
+        for (j = 0; j < pans.length; j++) pans[j].className = "panel" + (pans[j].id === name ? " active" : "");
       };
+    })(tabs[i]);
+  }
+})();
 
-      btn.disabled = true;
-      fetch("config", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-      .then(function(r) { return r.json().then(function(j) { return { ok: r.ok, body: j }; }); })
-      .then(function(res) {
-        if (!res.ok) {
-          btn.disabled = false;
-          showMsg("Save failed: " + (res.body.error || "unknown error"), "error");
-          return;
-        }
-        // Restart to apply. The restart kills this add-on (and therefore this
-        // page's connection), so a closed/failed request here is the normal
-        // success case — fire it and report success regardless of the reply.
-        showMsg("Settings saved. The add-on is restarting to apply the changes — it will be back in a few seconds.", "success");
-        fetch("restart", { method: "POST" }).catch(function() {});
-        setTimeout(function() { btn.disabled = false; }, 4000);
-      })
-      .catch(function() {
-        btn.disabled = false;
-        showMsg("Network error. Is the add-on running?", "error");
-      });
+function msg(text, ok) {
+  var el = document.getElementById("msg");
+  el.textContent = text;
+  el.className = ok === undefined ? "" : (ok ? "ok" : "err");
+}
+
+function loadConfig() {
+  fetch("config", { headers: { "Accept": "application/json" } })
+    .then(function (r) { return r.json(); })
+    .then(function (cfg) {
+      document.getElementById("api_host").value = cfg.api_host || "";
+      document.getElementById("relay_host").value = cfg.relay_host || "";
+      document.getElementById("buffer_limit").value = (cfg.buffer_limit != null) ? cfg.buffer_limit : 0;
+      document.getElementById("debug").checked = !!cfg.debug;
+      document.getElementById("is_low_memory").checked = !!cfg.is_low_memory;
+      document.getElementById("data_channel").checked = !!cfg.data_channel;
+      document.getElementById("disable_gc_fix").checked = !!cfg.disable_gc_fix;
+      document.getElementById("debug_memory").checked = !!cfg.debug_memory;
+      document.getElementById("mac").textContent = cfg.mac || "unknown";
+    })
+    .catch(function () { msg("Could not load current configuration.", false); });
+}
+
+function applyConfig() {
+  var apiHost   = document.getElementById("api_host").value.trim();
+  var relayHost = document.getElementById("relay_host").value.trim();
+  var buffer    = document.getElementById("buffer_limit").value.trim();
+
+  if (!apiHost) { msg("API Host is required.", false); return; }
+  if (!validHost(apiHost, VALID_API_HOSTS)) {
+    msg("API Host is not a recognized Corvid host. Check for typos; a port is optional.", false); return;
+  }
+  if (relayHost && relayHost.toLowerCase() !== "auto" && !validHost(relayHost, VALID_RELAY_HOSTS)) {
+    msg("Relay Host is not a recognized relay. Leave it as \"auto\" to let the API choose.", false); return;
+  }
+  if (buffer && !/^\d+$/.test(buffer)) {
+    msg("Buffer Limit must be a whole number (0 = default).", false); return;
+  }
+
+  var payload = {
+    api_host: apiHost,
+    relay_host: relayHost,
+    buffer_limit: buffer ? parseInt(buffer, 10) : 0,
+    debug: document.getElementById("debug").checked,
+    is_low_memory: document.getElementById("is_low_memory").checked,
+    data_channel: document.getElementById("data_channel").checked,
+    disable_gc_fix: document.getElementById("disable_gc_fix").checked,
+    debug_memory: document.getElementById("debug_memory").checked
+  };
+
+  var btn = document.getElementById("apply");
+  btn.disabled = true;
+  msg("Saving...");
+
+  fetch("config", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, body: j }; }); })
+  .then(function (res) {
+    if (!res.ok) {
+      btn.disabled = false;
+      msg("Error: " + (res.body.error || "unknown error"), false);
+      return;
     }
+    // Restart to apply. The restart kills this add-on (and therefore this
+    // page's connection), so a closed/failed request here is the normal
+    // success case — fire it and report success regardless of the reply.
+    msg("Saved. The add-on is restarting to apply the changes — it will be back in a few seconds.", true);
+    fetch("restart", { method: "POST" }).catch(function () {});
+    setTimeout(function () { btn.disabled = false; }, 4000);
+  })
+  .catch(function () {
+    btn.disabled = false;
+    msg("Network error. Is the add-on running?", false);
+  });
+}
 
-    function copyMac() {
-      var v = document.getElementById("mac-value").textContent;
-      if (!v || v === "—") return;
-      var btn = document.getElementById("mac-copy");
-      var done = function() {
-        btn.textContent = "Copied!";
-        setTimeout(function() { btn.textContent = "Copy"; }, 1500);
-      };
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(v).then(done, function() {});
-      } else {
-        var ta = document.createElement("textarea");
-        ta.value = v; ta.style.position = "fixed"; ta.style.opacity = "0";
-        document.body.appendChild(ta); ta.select();
-        try { document.execCommand("copy"); done(); } catch (e) {}
-        document.body.removeChild(ta);
-      }
-    }
+function copyMac() {
+  var v = document.getElementById("mac").textContent;
+  if (!v || v === "unknown") return;
+  var b = document.getElementById("copyBtn");
+  var done = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1500); };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(v).then(done, function () {});
+  } else {
+    var ta = document.createElement("textarea");
+    ta.value = v; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+}
 
-    document.addEventListener("DOMContentLoaded", function() {
-      loadConfig();
-      document.getElementById("save-btn").addEventListener("click", saveConfig);
-      document.getElementById("mac-copy").addEventListener("click", copyMac);
-    });
-  </script>
+document.addEventListener("DOMContentLoaded", function () {
+  loadConfig();
+  document.getElementById("apply").addEventListener("click", applyConfig);
+  document.getElementById("copyBtn").addEventListener("click", copyMac);
+});
+</script>
 </body>
 </html>

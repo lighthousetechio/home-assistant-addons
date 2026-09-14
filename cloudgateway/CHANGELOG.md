@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.4
+
+- Web UI restyled to match the Cloud Gateway design used across every other
+  platform (Axis, Hanwha, i-PRO, …), per `cameras/WEBUI_SPEC.md`: dark
+  header with the inlined Corvid logo, Basic/Advanced tabs, the same input
+  and button styling, support footer and `© Lighthouse Technologies`
+  copyright line.
+- API host and relay host are now validated against the standard Corvid
+  host allowlist client-side instead of a `<select>`/datalist (no
+  environment is presented as a pick list in a production UI — see the
+  spec's Validation section).
+- Relay host now accepts the standard `auto` sentinel (in addition to
+  empty) for "let the API assign one", matching every other platform.
+
 ## 1.3.3
 
 - `disable_gc_fix` now defaults to enabled. Confirmed on a test VM: without

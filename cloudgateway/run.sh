@@ -18,7 +18,9 @@ esac
 
 ARGS="-api_host=${API_PARAM}"
 
-if [ -n "${RELAY_HOST}" ]; then
+# "auto" is the standardized "unset" sentinel across all Corvid Cloud
+# Gateway platforms (cameras included) — treat it the same as empty.
+if [ -n "${RELAY_HOST}" ] && [ "$(echo "${RELAY_HOST}" | tr '[:upper:]' '[:lower:]')" != "auto" ]; then
     case "${RELAY_HOST}" in
         *:*) RELAY_PARAM="${RELAY_HOST}" ;;
         *)   RELAY_PARAM="${RELAY_HOST}:8888" ;;
